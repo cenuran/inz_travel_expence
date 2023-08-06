@@ -2,33 +2,35 @@ namespace travel;
 
 entity Trip {
   key ID : Integer;
-      startDate : Date;
-      endDate : Date;
-      country : Association to Country;
+    description : String;
+    startDate : Date;
+    endDate : Date;
+    country : Association to Country;
+    employee_id : Association to User;
 }
 
 entity Country {
   key ISOID : String;
-      countryName : String;
+  countryName : String;
 }
 
 entity Status {
-  key ID : Integer;
-      statusDesc : String;
+  key statusDesc : String;
 }
 
 entity Type {
-  key ID : Integer;
-      typeDesc : String;
+  key type :  String;
+  typeDesc : String;
 }
 
 entity SubType {
-  key ID : Integer;
-      subTypeDesc : String;
+  key subType : String;
+  subTypeDesc : String;
+  type : Association to Type
 }
 
 entity Currency {
-  key ID : Integer;
+  key ID : String;
       currency : String;
 }
 
@@ -37,23 +39,37 @@ entity User {
       name : String;
       surname : String;
       email : String;
+      role : Association to UserRole;
 }
 
 entity Project {
   key ID : Integer;
-      projectDesc : String;
-      PMUser : Association to User;
+  name : String;
+  projectDesc : String;
+  PMUser : Association to User;
+  status_pr : Association to StatusProject;
 }
 
 entity Expence {
   key ID : Integer;
-      dateOfExpence : Date;
-      rejectionReason : String;
+      dateOfExpense : Date;
       amount : Integer;
+      currency : Association to Currency;
       type : Association to Type;
       subType : Association to SubType;
       project : Association to Project;
       trip : Association to Trip;
-      status : Association to Status;
-      currency : Association to Currency;
+      statusDesc : Association to Status;
+      employee_id : Association to User;
+      approver_id : Association to User;
+      
+}
+
+entity UserRole {
+  key name : String;
+  
+}
+
+entity StatusProject{
+  key status_pr : String;
 }
