@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "@sap/hdi-deploy": "4.6.1",
-        "@sap/ux-specification": "^1.108.6",
+        "@sap/ux-specification": "^1.108.12",
         "@sap/xssec": "^3.2.17",
         "passport": "^0.6.0",
         "rimraf": "^3.0.2",
@@ -25,7 +25,8 @@
         "undeploy": "cf undeploy Travel_expence --delete-services --delete-service-keys --delete-service-brokers",
         "build": "rimraf resources mta_archives && mbt build --mtar archive",
         "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
-        "watch-budget": "cds watch --open budget/webapp/index.html?sap-ui-xx-viewCache=false"
+        "watch-budget": "cds watch --open budget/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
     },
     "engines": {
         "node": ">=6.9.1"
@@ -50,5 +51,8 @@
         "hana": {
             "deploy-format": "hdbtable"
         }
-    }
+    },
+    "sapux": [
+        "app/project1"
+    ]
 }

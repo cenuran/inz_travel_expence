@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Aggregation.V1.xml">
+        <edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Analytics.xml">
+        <edmx:Include Alias="Analytics" Namespace="com.sap.vocabularies.Analytics.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Country" EntityType="CatalogService.Country"/>
+                <EntitySet Name="Expence" EntityType="CatalogService.Expence">
+                    <NavigationPropertyBinding Path="currency" Target="Currency"/>
+                    <NavigationPropertyBinding Path="type" Target="Type"/>
+                    <NavigationPropertyBinding Path="subType" Target="SubType"/>
+                    <NavigationPropertyBinding Path="project" Target="Project"/>
+                    <NavigationPropertyBinding Path="trip" Target="Trip"/>
+                    <NavigationPropertyBinding Path="statusDesc" Target="Status"/>
+                    <NavigationPropertyBinding Path="employee_id" Target="User"/>
+                    <NavigationPropertyBinding Path="approver_id" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="Project" EntityType="CatalogService.Project">
+                    <NavigationPropertyBinding Path="PMUser" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="Status" EntityType="CatalogService.Status"/>
+                <EntitySet Name="SubType" EntityType="CatalogService.SubType">
+                    <NavigationPropertyBinding Path="type" Target="Type"/>
+                </EntitySet>
+                <EntitySet Name="Trip" EntityType="CatalogService.Trip">
+                    <NavigationPropertyBinding Path="country" Target="Country"/>
+                    <NavigationPropertyBinding Path="employee_id" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="Type" EntityType="CatalogService.Type"/>
+                <EntitySet Name="User" EntityType="CatalogService.User"/>
+                <EntitySet Name="Currency" EntityType="CatalogService.Currency"/>
+                <EntitySet Name="travelExpenceView" EntityType="CatalogService.travelExpenceView">
+                    <NavigationPropertyBinding Path="subTypeType" Target="Type"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="Country">
+                <Key>
+                    <PropertyRef Name="ISOID"/>
+                </Key>
+                <Property Name="ISOID" Type="Edm.String" Nullable="false"/>
+                <Property Name="countryName" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Expence">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="dateOfExpense" Type="Edm.Date"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <NavigationProperty Name="currency" Type="CatalogService.Currency">
+                    <ReferentialConstraint Property="currency_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="currency_ID" Type="Edm.String"/>
+                <NavigationProperty Name="type" Type="CatalogService.Type">
+                    <ReferentialConstraint Property="type_type" ReferencedProperty="type"/>
+                </NavigationProperty>
+                <Property Name="type_type" Type="Edm.String"/>
+                <NavigationProperty Name="subType" Type="CatalogService.SubType">
+                    <ReferentialConstraint Property="subType_subType" ReferencedProperty="subType"/>
+                </NavigationProperty>
+                <Property Name="subType_subType" Type="Edm.String"/>
+                <NavigationProperty Name="project" Type="CatalogService.Project">
+                    <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="project_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="trip" Type="CatalogService.Trip">
+                    <ReferentialConstraint Property="trip_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="trip_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="statusDesc" Type="CatalogService.Status">
+                    <ReferentialConstraint Property="statusDesc_statusDesc" ReferencedProperty="statusDesc"/>
+                </NavigationProperty>
+                <Property Name="statusDesc_statusDesc" Type="Edm.String"/>
+                <NavigationProperty Name="employee_id" Type="CatalogService.User">
+                    <ReferentialConstraint Property="employee_id_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="employee_id_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="approver_id" Type="CatalogService.User">
+                    <ReferentialConstraint Property="approver_id_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="approver_id_ID" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Project">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="projectDesc" Type="Edm.String"/>
+                <NavigationProperty Name="PMUser" Type="CatalogService.User">
+                    <ReferentialConstraint Property="PMUser_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="PMUser_ID" Type="Edm.Int32"/>
+                <Property Name="status_pr_status_pr" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Status">
+                <Key>
+                    <PropertyRef Name="statusDesc"/>
+                </Key>
+                <Property Name="statusDesc" Type="Edm.String" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="SubType">
+                <Key>
+                    <PropertyRef Name="subType"/>
+                </Key>
+                <Property Name="subType" Type="Edm.String" Nullable="false"/>
+                <Property Name="subTypeDesc" Type="Edm.String"/>
+                <NavigationProperty Name="type" Type="CatalogService.Type">
+                    <ReferentialConstraint Property="type_type" ReferencedProperty="type"/>
+                </NavigationProperty>
+                <Property Name="type_type" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Trip">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="startDate" Type="Edm.Date"/>
+                <Property Name="endDate" Type="Edm.Date"/>
+                <NavigationProperty Name="country" Type="CatalogService.Country">
+                    <ReferentialConstraint Property="country_ISOID" ReferencedProperty="ISOID"/>
+                </NavigationProperty>
+                <Property Name="country_ISOID" Type="Edm.String"/>
+                <NavigationProperty Name="employee_id" Type="CatalogService.User">
+                    <ReferentialConstraint Property="employee_id_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="employee_id_ID" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Type">
+                <Key>
+                    <PropertyRef Name="type"/>
+                </Key>
+                <Property Name="type" Type="Edm.String" Nullable="false"/>
+                <Property Name="typeDesc" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="User">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="surname" Type="Edm.String"/>
+                <Property Name="email" Type="Edm.String"/>
+                <Property Name="role_name" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Currency">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="currency" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="travelExpenceView">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="dateOfExpense" Type="Edm.Date"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <Property Name="currencyID" Type="Edm.String"/>
+                <Property Name="currency" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="typeDesc" Type="Edm.String"/>
+                <Property Name="subType" Type="Edm.String"/>
+                <Property Name="subTypeDesc" Type="Edm.String"/>
+                <NavigationProperty Name="subTypeType" Type="CatalogService.Type">
+                    <ReferentialConstraint Property="subTypeType_type" ReferencedProperty="type"/>
+                </NavigationProperty>
+                <Property Name="subTypeType_type" Type="Edm.String"/>
+                <Property Name="projectID" Type="Edm.Int32"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="projectDesc" Type="Edm.String"/>
+                <Property Name="projectPMUserID" Type="Edm.Int32"/>
+                <Property Name="projectPMUserName" Type="Edm.String"/>
+                <Property Name="projectPMUserSurname" Type="Edm.String"/>
+                <Property Name="projectPMUserRole_name" Type="Edm.String"/>
+                <Property Name="projectPMUserEmail" Type="Edm.String"/>
+                <Property Name="status_pr" Type="Edm.String"/>
+                <Property Name="tripID" Type="Edm.Int32"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="startDate" Type="Edm.Date"/>
+                <Property Name="endDate" Type="Edm.Date"/>
+                <Property Name="ISOID" Type="Edm.String"/>
+                <Property Name="countryName" Type="Edm.String"/>
+                <Property Name="tripEmployee_idID" Type="Edm.Int32"/>
+                <Property Name="tripEmployee_idName" Type="Edm.String"/>
+                <Property Name="tripEmployee_idSurname" Type="Edm.String"/>
+                <Property Name="tripEmployee_idRole_name" Type="Edm.String"/>
+                <Property Name="tripEmployee_idEmail" Type="Edm.String"/>
+                <Property Name="employee_idID" Type="Edm.Int32"/>
+                <Property Name="employee_idName" Type="Edm.String"/>
+                <Property Name="employee_idSurname" Type="Edm.String"/>
+                <Property Name="eployee_idRole_name" Type="Edm.String"/>
+                <Property Name="employee_idEmail" Type="Edm.String"/>
+                <Property Name="statusDesc" Type="Edm.String"/>
+                <Property Name="approver_idID" Type="Edm.Int32"/>
+                <Property Name="approver_idName" Type="Edm.String"/>
+                <Property Name="approver_idSurname" Type="Edm.String"/>
+                <Property Name="approver_idRole_name" Type="Edm.String"/>
+                <Property Name="approver_idEmail" Type="Edm.String"/>
+            </EntityType>
+            <Annotations Target="CatalogService.travelExpenceView">
+                <Annotation Term="UI.Chart">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>amount</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="amount"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>typeDesc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="typeDesc"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>dateOfExpense</PropertyPath>
+                        <PropertyPath>typeDesc</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="dateOfExpense"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="typeDesc"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="amount"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="currency"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record Type="Aggregation.ApplySupportedType">
+                        <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CatalogService.EntityContainer/travelExpenceView">
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record Type="Aggregation.ApplySupportedType">
+                        <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/dateOfExpense">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/amount">
+                <Annotation Term="Analytics.Measure" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/currency">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/typeDesc">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/subTypeDesc">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/name">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectDesc">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectPMUserID">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectPMUserName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectPMUserSurname">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectPMUserRole_name">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/projectPMUserEmail">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/status_pr">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/description">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/startDate">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/endDate">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/countryName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/tripEmployee_idName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/tripEmployee_idSurname">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/tripEmployee_idRole_name">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/tripEmployee_idEmail">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/employee_idName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/employee_idSurname">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/eployee_idRole_name">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/employee_idEmail">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/statusDesc">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/approver_idName">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/approver_idSurname">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/approver_idRole_name">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.travelExpenceView/approver_idEmail">
+                <Annotation Term="Analytics.Dimension" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
